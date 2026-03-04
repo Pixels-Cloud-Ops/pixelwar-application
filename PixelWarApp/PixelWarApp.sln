@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "pixelwarapp.client", "pixelwarapp.client\pixelwarapp.client.esproj", "{87B0409B-98CA-2037-F5EA-949D76A6CD45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelWarApp.Server", "PixelWarApp.Server\PixelWarApp.Server.csproj", "{EA9FF5C8-940D-43CE-99BF-79F538421FBA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{87B0409B-98CA-2037-F5EA-949D76A6CD45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87B0409B-98CA-2037-F5EA-949D76A6CD45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87B0409B-98CA-2037-F5EA-949D76A6CD45}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{87B0409B-98CA-2037-F5EA-949D76A6CD45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87B0409B-98CA-2037-F5EA-949D76A6CD45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87B0409B-98CA-2037-F5EA-949D76A6CD45}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{EA9FF5C8-940D-43CE-99BF-79F538421FBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA9FF5C8-940D-43CE-99BF-79F538421FBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA9FF5C8-940D-43CE-99BF-79F538421FBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA9FF5C8-940D-43CE-99BF-79F538421FBA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {246FBFF8-94A9-4006-87A2-0C93C550DAE3}
+	EndGlobalSection
+EndGlobal
