@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using PixelWarApp.Server.Data;
+using PixelWarApp.Server.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +11,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+builder.Services.AddDbContext<PixelDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PixelsDB")));
+
+
+builder.Services.AddScoped<PixelService>();
+
+
 var app = builder.Build();
+
+
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
