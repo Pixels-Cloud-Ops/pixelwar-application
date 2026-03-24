@@ -6,7 +6,7 @@ export interface Pixel {
   color: string;
 }
 
-const API_URL = "https://localhost:7009/api/pixels";
+let API_URL = "/api/pixels";
 
 export const getPixels = async (): Promise<Pixel[]> => {
   const response = await axios.get(API_URL);

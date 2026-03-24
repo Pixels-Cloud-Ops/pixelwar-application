@@ -4,6 +4,9 @@ using PixelWarApp.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//surcharger avec les env vars K3s
+builder.Configuration.AddEnvironmentVariables();
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -22,7 +25,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactApp", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "https://localhost:5173")
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -50,5 +53,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
+
+// Migration automatique
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<PixelDbContext>();
+    db.Database.Migrate();
+}
 
 app.Run();
