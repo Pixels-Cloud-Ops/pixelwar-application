@@ -1,0 +1,51 @@
+name: Deploy Prod
+
+on:
+  pull_request:
+    branches:
+      - prod
+    types:
+      - closed
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Build & Push Frontend
+        run: |
+          docker build -t ahmed103c/pixelwar-front:${{ github.sha }} \
+            ./PixelWarApp/pixelwarapp.client
+          docker push ahmed103c/pixelwar-front:${{ github.sha }}
+
+      - name: Build & Push Backend
+        run: |
+          docker build -t ahmed103c/pixelwar-back:${{ github.sha }} \
+            ./PixelWarApp/PixelWarApp.Server
+          docker push ahmed103c/pixelwar-back:${{ github.sha }}
+
+      - name: Setup kubectl
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG_PROD }}" > ~/.kube/config
+
+      - name: Créer/Mettre à jour le secret DB
+        run: |
+          kubectl create secret generic db-secret \
+            --from-literal=ConnectionStrings__PixelsDB="${{ secrets.DB_CONNECTION_PROD }}" \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Deploy
+        run: |
+          kubectl set image deployment/frontend \
+            frontend=ahmed103c/pixelwar-front:${{ github.sha }}
+          kubectl set image deployment/backend \
+            backend=ahmed103c/pixelwar-back:${{ github.sha }}
+          kubectl rollout status deployment/frontend
+          kubectl rollout status deployment/backend
