@@ -55,7 +55,7 @@ function Grid() {
 
   return (
     <div>
-      <div className="title">Pixel War</div>
+      <div className="title">Pixel War V2</div>
 
       <div className="palette">
         {PALETTE.map((c) => (
