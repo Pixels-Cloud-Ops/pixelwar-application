@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using OpenTelemetry.Metrics;
 using PixelWarApp.Server.Data;
 using PixelWarApp.Server.Services;
 
@@ -20,6 +21,21 @@ builder.Services.AddDbContext<PixelDbContext>(options =>
 
 
 builder.Services.AddScoped<PixelService>();
+
+// Heatlh checks
+builder.Services.AddHealthChecks()
+        .AddNpgSql(builder.Configuration.GetConnectionString("PixelsDB"));
+
+// OpenTelemetry + Prometheus
+builder.Services.AddOpenTelemetry()
+        .WithMetrics(metrics =>
+        {
+            metrics
+                .AddAspNetCoreInstrumentation()
+                .AddHttpClientInstrumentation()
+                .AddPrometheusExporter();
+        });
+
 
 builder.Services.AddCors(options =>
 {
@@ -51,6 +67,12 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+//Health check endpoint
+app.MapHealthChecks("/health");
+
+// Prometheus metrics endpoint
+app.MapPrometheusScrapingEndpoint();
 
 app.MapFallbackToFile("/index.html");
 
