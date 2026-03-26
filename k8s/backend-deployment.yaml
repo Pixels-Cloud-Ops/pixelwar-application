@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+      annotations:
+        prometheus.io/scrape: "true"    
+        prometheus.io/path: "/metrics"  
+        prometheus.io/port: "7009"      
+    spec:
+      containers:
+        - name: backend
+          image: ahmed103c/pixelwar-back:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 7009
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
+            - name: ASPNETCORE_URLS
+              value: "http://+:7009"
+            - name: ConnectionStrings__PixelsDB
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: ConnectionStrings__PixelsDB
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 7009
+            initialDelaySeconds: 15
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 7009
+            initialDelaySeconds: 10
+            periodSeconds: 10
